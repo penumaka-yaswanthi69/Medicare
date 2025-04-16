@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url("https://media.istockphoto.com/id/1392073422/photo/healthcare-business-graph-and-data-of-medical-business-growth-and-gold-stethoscope-of-doctor.jpg?s=612x612&w=0&k=20&c=46y5F6qmKBjfcw6LBzUIV1xZVeWb8zFKe7LKtOFQtuM=");
+            background-size:cover;
+            background-repeat: no-repeat;
+        }
+        .register-container {
+            background-color: #44709a;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        .register-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color:azure;
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .input-field:focus {
+            border-color: #e45bf1;
+        }
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #e45bf1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #4e37c1;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="register-container">
+        <h2>Register for Your Medicare</h2>
+        <form id="registerForm" method="POST" action='{{url_for("register")}}'>
+            <input type="text" name="patient_name" class="input-field" placeholder="Patient Name" required>
+            <input type="number" name="age" class="input-field" placeholder="Age" required>
+            <input type="decimal" name="height" class="input-field" placeholder="Height" required>
+            <input type="number" name="weight" class="input-field" placeholder="Weight" required>
+            <input type="text" name="email" class="input-field" placeholder="Email" required>
+            <input type="password" name="password" class="input-field" placeholder="Password" required>
+            <input type="text" name="mobile_number" class="input-field" placeholder="Mobile Number" required>
+            <textarea name="address" class="input-field" placeholder="Address" required></textarea>
+            <label for="gender">Gender:</label>
+            <select name="gender" class="input-field" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+            <a href='{{url_for("home")}}'><button type="submit" class="btn">Register</button></a>
+        </form>
+        <div class="error" id="errorMessage"></div>
+    </div>
+
+    <script>
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            const username = document.forms["registerForm"]["username"].value;
+            const password = document.forms["registerForm"]["password"].value;
+            const mobile = document.forms["registerForm"]["mobile_number"].value;
+            const address = document.forms["registerForm"]["address"].value;
+    
+            // Basic validation
+            if (username == "" || password == "" || mobile == "" || address == "") {
+                event.preventDefault();
+                alert("Please fill in all fields.");
+            }
+        });
+    </script>
+    
+
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>fitness</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg, #f4f6f8);
+      color: var(--text, #2c3e50);
+      margin: 0;
+      padding: 2rem;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .dark {
+      --bg: #121212;
+      --text: #f1f1f1;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .controls {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .controls button {
+      margin: 0 10px;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #27ae60;
+      color: white;
+    }
+
+    .dashboard, .log-section, .entries, .chart-section {
+      background: #fff;
+      color: #000;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+    }
+
+    .dark .dashboard, .dark .log-section, .dark .entries, .dark .chart-section {
+      background: #1e1e1e;
+      color: #f1f1f1;
+    }
+
+    .dashboard {
+      display: flex;
+      justify-content: space-between;
+      text-align: center;
+    }
+
+    .card {
+      flex: 1;
+      margin: 0 0.5rem;
+    }
+
+    form label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+
+    form input, form select {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+    }
+
+    form button {
+      margin-top: 1.5rem;
+      padding: 0.8rem 1.5rem;
+      background: #27ae60;
+      color: #fff;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+
+    .entry {
+      padding: 1rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .entry small {
+      color: #888;
+    }
+
+    .entry button {
+      margin-top: 0.5rem;
+      padding: 0.3rem 0.8rem;
+      border: none;
+      border-radius: 5px;
+      background: #c0392b;
+      color: white;
+      cursor: pointer;
+    }
+
+    canvas {
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Fitness Tracker</h1>
+
+    <div class="controls">
+      <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+      <button onclick="downloadCSV()">Export CSV</button>
+    </div>
+
+    <section class="dashboard" id="totals">
+      <div class="card">
+        <h2 id="totalCalories">0</h2>
+        <p>Total Calories</p>
+      </div>
+      <div class="card">
+        <h2 id="totalDuration">0</h2>
+        <p>Total Duration (mins)</p>
+      </div>
+    </section>
+
+    <section class="log-section">
+      <form id="activityForm">
+        <h3>Log Workout</h3>
+        <label for="type">Workout Type</label>
+        <select id="type" required>
+          <option value="running">Running</option>
+          <option value="walking">Walking</option>
+          <option value="cycling">Cycling</option>
+          <option value="yoga">Yoga</option>
+          <option value="swimming">Swimming</option>
+          <option value="strength">Strength Training</option>
+        </select>
+        <label for="duration">Duration (minutes)</label>
+        <input type="number" id="duration" required />
+        <label for="weight">Your Weight (kg)</label>
+        <input type="number" id="weight" required />
+        <button type="submit">Add Entry</button>
+      </form>
+    </section>
+
+    <section class="chart-section">
+      <h3>Calories Burned Over Time</h3>
+      <canvas id="calorieChart" height="100"></canvas>
+    </section>
+
+    <section class="entries" id="entryList">
+      <h3>Workout Entries</h3>
+    </section>
+  </div>
+
+  <script>
+    const MET_VALUES = {
+      running: 9.8,
+      walking: 3.5,
+      cycling: 7.5,
+      yoga: 2.5,
+      swimming: 8.0,
+      strength: 6.0
+    };
+
+    const form = document.getElementById('activityForm');
+    const entryList = document.getElementById('entryList');
+    const totalCalories = document.getElementById('totalCalories');
+    const totalDuration = document.getElementById('totalDuration');
+    const calorieChartCtx = document.getElementById('calorieChart').getContext('2d');
+    let chart;
+
+    let activities = JSON.parse(localStorage.getItem('predictedFitness')) || [];
+
+    function saveToLocalStorage() {
+      localStorage.setItem('predictedFitness', JSON.stringify(activities));
+    }
+
+    function calculateCalories(type, duration, weight) {
+      const MET = MET_VALUES[type] || 5.0;
+      return +(MET * weight * (duration / 60)).toFixed(2);
+    }
+
+    function updateTotals() {
+      const totalCal = activities.reduce((sum, e) => sum + e.calories, 0);
+      const totalDur = activities.reduce((sum, e) => sum + e.duration, 0);
+
+      totalCalories.textContent = totalCal.toFixed(1);
+      totalDuration.textContent = totalDur;
+    }
+
+    function renderEntries() {
+      entryList.innerHTML = '<h3>Workout Entries</h3>';
+      activities.slice().reverse().forEach((entry, index) => {
+        const actualIndex = activities.length - 1 - index;
+        const div = document.createElement('div');
+        div.className = 'entry';
+        div.innerHTML = `
+          <strong>${entry.type}</strong> - ${entry.duration} mins - 
+          <strong>${entry.calories} cal</strong>
+          <br/><small>${new Date(entry.date).toLocaleString()}</small>
+          <br/>
+          <button onclick="deleteEntry(${actualIndex})">Delete</button>
+        `;
+        entryList.appendChild(div);
+      });
+    }
+
+    function deleteEntry(index) {
+      if (confirm('Are you sure you want to delete this entry?')) {
+        activities.splice(index, 1);
+        saveToLocalStorage();
+        updateTotals();
+        renderEntries();
+        updateChart();
+      }
+    }
+
+    function updateChart() {
+      const grouped = {};
+
+      activities.forEach(entry => {
+        const day = new Date(entry.date).toLocaleDateString();
+        if (!grouped[day]) grouped[day] = 0;
+        grouped[day] += entry.calories;
+      });
+
+      const labels = Object.keys(grouped);
+      const data = Object.values(grouped);
+
+      if (chart) chart.destroy();
+      chart = new Chart(calorieChartCtx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Calories Burned',
+            data,
+            backgroundColor: '#27ae60'
+          }]
+        },
+        options: {
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
+    }
+
+    function downloadCSV() {
+      const csvRows = [
+        ["Date", "Workout Type", "Duration (min)", "Weight (kg)", "Calories Burned"]
+      ];
+      activities.forEach(entry => {
+        csvRows.push([
+          new Date(entry.date).toLocaleString(),
+          entry.type,
+          entry.duration,
+          entry.weight,
+          entry.calories
+        ]);
+      });
+      const csv = csvRows.map(row => row.join(",")).join("\n");
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = "fitness_tracker_data.csv";
+      link.click();
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const type = document.getElementById('type').value;
+      const duration = parseFloat(document.getElementById('duration').value);
+      const weight = parseFloat(document.getElementById('weight').value);
+
+      const calories = calculateCalories(type, duration, weight);
+      const newEntry = {
+        type, duration, weight, calories,
+        date: new Date().toISOString()
+      };
+
+      activities.push(newEntry);
+      saveToLocalStorage();
+      updateTotals();
+      renderEntries();
+      updateChart();
+      form.reset();
+    });
+
+    // Initial load
+    updateTotals();
+    renderEntries();
+    updateChart();
+  </script>
+</body>
+</html>

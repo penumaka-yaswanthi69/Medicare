@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url("https://media.istockphoto.com/id/1392073422/photo/healthcare-business-graph-and-data-of-medical-business-growth-and-gold-stethoscope-of-doctor.jpg?s=612x612&w=0&k=20&c=46y5F6qmKBjfcw6LBzUIV1xZVeWb8zFKe7LKtOFQtuM=");
+            background-size:cover;
+            background-repeat: no-repeat;
+        }
+        .login-container {
+            background-color: #44709a;
+            padding: 55px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color:azure;
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .input-field:focus {
+            border-color: #e45bf1;
+        }
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #e45bf1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #ac37c1;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Login to Your Medicare</h2>
+        <form id="loginForm">
+            <input type="text" id="username" class="input-field" placeholder="Username" required>
+            <input type="password" id="password" class="input-field" placeholder="Password" required>
+            <a href='{{url_for("home")}}'><button type="button" class="btn" onclick="validateForm()">Login</button></a>
+            <div class="error" id="errorMessage"></div>
+        </form>
+    </div>
+
+    <script>
+        function validateForm() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const errorMessage = document.getElementById("errorMessage");
+
+            if (username === "" || password === "") {
+                errorMessage.textContent = "Please fill in all fields.";
+                return false;
+            }
+
+            if (username === "admin" && password === "password123") {
+                alert("Login successful! Welcome to the Online Grocery Store.");
+                // Redirect to the main store page or dashboard
+                window.location.href = "store.html";
+            } else {
+                errorMessage.textContent = "Invalid username or password.";
+            }
+        }
+    </script>
+
+</body>
+</html>

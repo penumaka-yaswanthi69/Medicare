@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mainpage</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/24ea5a3324.js" crossorigin="anonymous"></script>
+    <style>
+.navbar{
+    height: 60px;
+}
+.stylinglogo{
+    width: 70px;
+    height:40px;
+    padding:5px;
+}
+#go{
+    color: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+    border:0px;
+}
+#go:hover{
+    color:#c90202;
+}
+#goo1{
+    background-color:#c90202;
+    color: white;
+    padding: 4px 6px;
+    border-radius: 5px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight:800px;
+    border:0px;
+    margin-left: 20px;
+}
+#goo1:hover{
+    background-color:lightpink;
+    color: #c90202;
+}
+.bgimg1{
+    background-image: url("https://media.istockphoto.com/id/1127771193/photo/healthcare-professional-medical-doctor-using-tablet-and-smartphone-for-consult-patient-via.jpg?s=612x612&w=0&k=20&c=f0YF8px5Z8EjaCFIOHvQonkTPprkyeiGonZPCmulYaU=");
+    background-size: cover;
+    height:80vh;
+}
+.heading{
+    font-size: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(125, 6, 135);
+    font-weight: bold;
+}
+.paraline{
+    color: rgb(125, 6, 135);
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+}
+.buttonst{
+    color:white;
+    background-color: #268AF3;
+    width: 230px;
+    height:45px;
+    border-width: 0px;
+    border-radius: 8px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+.netbgimg{
+    background-image:url("https://media.istockphoto.com/id/1177410898/photo/this-is-the-digital-age.jpg?s=2048x2048&w=is&k=20&c=DhejQ_FrUWS1yTcQlrxGNoVv8lFQmV_syEPCW4k_Xuk=");
+}
+.netimage{
+    width: 350px;
+}
+.nethead{
+    color:whitesmoke;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    padding:5px;
+}
+.netpara{
+    color: #5a7184;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 16px;
+}
+.netbutton{
+    color: white;
+    background-color: #268AF3;
+    width: 130px;
+    height: 45px;
+    border-width: 0;
+    border-radius: 8px;
+    margin-right: 10px;
+}
+.netimage1{
+    background-image:url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO4uvYKSN4labC7uadcqQ7BIHQtb06Sl8cbDAYbAvc2XD6VnN9y4pNSZf9PsB1CvHubE8&usqp=CAU");
+    height:400px;
+    width:600px;
+    border-radius: 50px;
+}
+.playhead{
+    color: #f5f7fa;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+}
+    </style>
+</head>
+<body>
+    <!--Navbar section-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <!-- Logo at the top-left corner -->
+            <div class="logo">
+                <img class="myimg" src="https://img.freepik.com/premium-vector/medicare-logo-medical-health-service-logo-with-hand-cross-figure_1093924-165.jpg" style= "height:60px; width:70px; height:50px; border-radius: 60px; padding: 1px;"alt="">
+            </div>
+
+            <a class="navbar-brand" href="#" style="margin-left: 20px;">Your Medicare</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href='{{url_for("home")}}'>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"a href='{{url_for("about")}}'>About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='{{url_for("contact")}}'>Contact</a>
+                    </li>
+                
+                    <li class="nav-item">
+                        <a class="nav-link" href='{{url_for("blog")}}'>Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='{{url_for("developer")}}'>Developer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='{{url_for("login")}}'>Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='{{url_for("register")}}'>Register</a>
+                    </li>
+                </ul>
+                
+            </div>
+        </div>
+    </nav>
+  <!--banner section-->
+  <div class="bgimg1 d-flex flex-column justify-content-end">
+    <div class="text-center mb-4">
+      <h1 class="heading">You are the Life <br>of your Health care</h1>
+      <p class="paraline">No one should have to choose between <br>putting food on the table and getting <br>the healthcare they need...</p>
+      <a href='{{url_for("index")}}'>
+      <button class="buttonst">Embark on</button>
+      </a>
+    </div>
+  </div>
+  <!--Content section-->
+  <div class="netbgimg pt-4 pb-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-5 order-1 order-md-2">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO4uvYKSN4labC7uadcqQ7BIHQtb06Sl8cbDAYbAvc2XD6VnN9y4pNSZf9PsB1CvHubE8&usqp=CAU" class="netimage1"/>
+      </div>
+      <div class="col-12 col-md-7 order-2 order-md-1">
+        <h1 class="nethead">Refresh your Fitness<br>for Spring</h1>
+        <p class="netpara">There are no limits<br> to what can be done.<br> The limit is Right here,<br> IN YOUR HAND...</p>
+        <a href='{{url_for("fitness")}}'><button class="netbutton">Kick on</button></a>
+      </div>
+    </div>
+    </div>
+  </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+</body>
+</html>
